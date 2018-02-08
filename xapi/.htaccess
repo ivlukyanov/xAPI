@@ -1,0 +1,20 @@
+# Логгировать все входящие и исходящие параметры вызовов
+SetEnv _XAPI_ENV DEVELOPMENT
+# на продакшн-сервере это закомментировать для уменьшения нагрузки!
+
+# Индексная страница, которая принимает внешние вызовы в данном узле xAPI
+DirectoryIndex index.php
+# она принимает вызовы с алиаса xapi.site1.org, которые направляются сюда из корневого .htaccess через RewriteRule
+
+# Блокируем доступ с неразрешенных адресов
+Order Deny, Allow
+Deny from all
+Allow from 78.46.103.* # IP-адреса основного сервера
+#Allow from ...* # IP-адрес разработчика - только на время тестирования
+
+# Включаем mod_rewrite для проверки https
+RewriteEngine on
+RewriteBase /
+# Закрываем доступ от НЕ-https запросов
+RewriteCond %{HTTPS} off
+RewriteRule .* – [L,F]
